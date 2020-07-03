@@ -19,7 +19,7 @@
       />
       <div style="margin: 16px;">
         <van-button round block type="info" native-type="submit">
-          提交
+          登录
         </van-button>
       </div>
     </van-form>
@@ -31,7 +31,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 export default {
   data() {
     return {
@@ -57,9 +56,15 @@ export default {
       }
     }
   },
+  created() {
+    // 获取到路由中的参数，赋值给username和password
+    const { username, password } = this.$route.params
+    this.username = username
+    this.password = password
+  },
   methods: {
     async onSubmit() {
-      const res = await axios.post('http://localhost:3000/login', {
+      const res = await this.$axios.post('/login', {
         username: this.username,
         password: this.password
       })
@@ -78,7 +83,11 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
+/*
+  scoped会给当前组件中所有的样式添加一个属性选择器 data-v-xxxx
+  scoped会给当前组件中所有的元素也添加这个属性
+*/
 .login {
   .tips {
     font-size: 14px;
