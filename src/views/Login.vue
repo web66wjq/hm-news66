@@ -25,7 +25,8 @@
     </van-form>
 
     <p class="tips">
-      没有账号？去<router-link to="/register">注册</router-link>
+      没有账号？去
+      <router-link to="/register">注册</router-link>
     </p>
   </div>
 </template>
@@ -74,7 +75,9 @@ export default {
         this.$toast.success(message)
         // 保存token
         localStorage.setItem('token', data.token)
-        this.$router.push('/')
+        // 保存user_id
+        localStorage.setItem('userId', data.user.id)
+        this.$router.push('/user')
       } else {
         this.$toast.fail(message)
       }
@@ -88,6 +91,9 @@ export default {
   scoped会给当前组件中所有的样式添加一个属性选择器 data-v-xxxx
   scoped会给当前组件中所有的元素也添加这个属性
 */
+p[data-v-xxx] {
+  background-color: pink;
+}
 .login {
   .tips {
     font-size: 14px;
