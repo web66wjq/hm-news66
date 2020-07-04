@@ -18,20 +18,18 @@
         :rules="rules.password"
       />
       <div style="margin: 16px;">
-        <van-button round block type="info" native-type="submit">
-          提交
-        </van-button>
+        <van-button round block type="info">登录</van-button>
       </div>
     </van-form>
 
     <p class="tips">
-      没有账号？去<router-link to="/register">注册</router-link>
+      没有账号？去
+      <router-link to="/register">注册</router-link>
     </p>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
 export default {
   data() {
     return {
@@ -57,9 +55,15 @@ export default {
       }
     }
   },
+  created() {
+    // 获取到路由中的参数，赋值给username和password
+    const { username, password } = this.$route.params
+    this.username = username
+    this.password = password
+  },
   methods: {
     async onSubmit() {
-      const res = await axios.post('http://localhost:3000/login', {
+      const res = await this.$axios.post('/login', {
         username: this.username,
         password: this.password
       })
@@ -69,7 +73,9 @@ export default {
         this.$toast.success(message)
         // 保存token
         localStorage.setItem('token', data.token)
-        this.$router.push('/')
+        // 保存user_id
+        localStorage.setItem('userId', data.user.id)
+        this.$router.push('/user')
       } else {
         this.$toast.fail(message)
       }
@@ -78,7 +84,14 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
+/*
+  scoped会给当前组件中所有的样式添加一个属性选择器 data-v-xxxx
+  scoped会给当前组件中所有的元素也添加这个属性
+*/
+p[data-v-xxx] {
+  background-color: pink;
+}
 .login {
   .tips {
     font-size: 14px;
